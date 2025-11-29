@@ -224,10 +224,12 @@ export const RangeMode: Story = {
     },
     sliderWidth: 800,
     sliderHeight: 120,
-    trackActiveClassName: 'bg-blue-400/20',
-    trackBaseClassName: 'bg-gray-400',
+    classNames: {
+      trackActive: 'bg-blue-400/20',
+      track: 'bg-gray-400',
+      timeUnitSelector: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    },
     minGapScaleUnits: 1,
-    timeUnitSelectionClassName: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
   },
 };
 
@@ -241,9 +243,11 @@ export const PointMode: Story = {
     initialPoint: toUTCDate('2019-01-01'),
     sliderWidth: 600,
     sliderHeight: 90,
-    trackActiveClassName: 'bg-green-400/20',
-    trackBaseClassName: 'bg-gray-400',
-    timeUnitSelectionClassName: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    classNames: {
+      trackActive: 'bg-green-400/20',
+      track: 'bg-gray-400',
+      timeUnitSelector: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    },
   },
 };
 
@@ -261,10 +265,12 @@ export const CombinedMode: Story = {
     initialPoint: toUTCDate('2023-08-01'),
     sliderWidth: 900,
     sliderHeight: 140,
-    trackActiveClassName: 'bg-purple-400/20',
-    trackBaseClassName: 'bg-gray-300',
+    classNames: {
+      trackActive: 'bg-purple-400/20',
+      track: 'bg-gray-300',
+      timeUnitSelector: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    },
     minGapScaleUnits: 2,
-    timeUnitSelectionClassName: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
   },
 };
 
@@ -282,9 +288,11 @@ export const FixedTRackWidthSlider: Story = {
     sliderWidth: 'fill',
     isTrackFixedWidth: true,
     sliderHeight: 100,
-    trackActiveClassName: 'bg-orange-400/20',
-    trackBaseClassName: 'bg-gray-400',
-    timeUnitSelectionClassName: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    classNames: {
+      trackActive: 'bg-orange-400/20',
+      track: 'bg-gray-400',
+      timeUnitSelector: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    },
   },
 };
 
@@ -302,12 +310,13 @@ export const CustomStyles: Story = {
     initialPoint: toUTCDate('2023-10-10'),
     sliderWidth: 700,
     sliderHeight: 110,
-    wrapperClassName: 'rounded-xl shadow-lg bg-white border-2 border-indigo-200',
-    sliderClassName:
-      'rounded-lg border border-gray-300 bg-gradient-to-r from-indigo-50 to-purple-50',
-    trackActiveClassName: 'bg-gradient-to-r from-indigo-400/30 to-purple-400/30',
-    trackBaseClassName: 'bg-gray-400 border border-gray-200',
-    timeUnitSelectionClassName: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    classNames: {
+      wrapper: 'rounded-xl shadow-lg bg-white border-2 border-indigo-200',
+      slider: 'rounded-lg border border-gray-300 bg-gradient-to-r from-indigo-50 to-purple-50',
+      trackActive: 'bg-gradient-to-r from-indigo-400/30 to-purple-400/30',
+      track: 'bg-gray-400 border border-gray-200',
+      timeUnitSelector: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    },
     minGapScaleUnits: 1,
     trackPaddingX: 48,
   },
@@ -323,9 +332,11 @@ export const YearlyOverview: Story = {
     initialPoint: toUTCDate('2024-01-01'),
     sliderWidth: 800,
     sliderHeight: 100,
-    trackActiveClassName: 'bg-rose-400/20',
-    trackBaseClassName: 'bg-gray-300',
-    timeUnitSelectionClassName: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    classNames: {
+      trackActive: 'bg-rose-400/20',
+      track: 'bg-gray-300',
+      timeUnitSelector: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    },
     scaleUnitConfig: {
       gap: 60,
       width: { short: 1, medium: 1, long: 1 },
@@ -345,9 +356,11 @@ export const ScrollableSlider: Story = {
     sliderWidth: 600,
     sliderHeight: 80,
     scrollable: true,
-    trackActiveClassName: 'bg-teal-400/20',
-    trackBaseClassName: 'bg-gray-300',
-    timeUnitSelectionClassName: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    classNames: {
+      trackActive: 'bg-teal-400/20',
+      track: 'bg-gray-300',
+      timeUnitSelector: 'bg-gray-300 p-3 rounded-lg border border-indigo-200',
+    },
     scaleUnitConfig: {
       gap: 100,
       width: { short: 1, medium: 2, long: 2 },
@@ -385,10 +398,12 @@ const FrostedGlassTemplate = (args: Partial<SliderProps>) => {
         endDate={endDate}
         initialPoint={date}
         pointHandleIcon={<Triangle className="text-slate-700 fill-slate-700" size={24} />}
-        sliderClassName="frosted"
-        timeUnitSelectionClassName="frosted"
-        timeDisplayClassName="frosted"
-        trackActiveClassName="hidden"
+        classNames={{
+          slider: 'frosted',
+          timeUnitSelector: 'frosted',
+          timeDisplay: 'frosted',
+          trackActive: 'hidden',
+        }}
         onChange={handleSelect}
         scrollable
         scaleUnitConfig={{

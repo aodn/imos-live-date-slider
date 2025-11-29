@@ -10,7 +10,13 @@ import type { TimeUnit, TimeUnitSelectionProps } from '../type';
 const TIME_UNITS: Array<TimeUnit> = ['day', 'month', 'year'];
 
 export const TimeUnitSelection = memo(
-  ({ initialTimeUnit, isMonthValid, isYearValid, className, onChange }: TimeUnitSelectionProps) => {
+  ({
+    initialTimeUnit,
+    isMonthValid,
+    isYearValid,
+    onChange,
+    classNames,
+  }: TimeUnitSelectionProps) => {
     const [timeUnit, setTimeUnit] = useState<TimeUnit>(initialTimeUnit);
     const timeUnitSelectionIndexRef = useRef(TIME_UNITS.indexOf(timeUnit) ?? 0);
     const { ref, heightBreakpoint } = useElementSize<HTMLDivElement>({
@@ -58,7 +64,7 @@ export const TimeUnitSelection = memo(
     };
 
     return (
-      <div className={cn('border-l', className)}>
+      <div className={cn('border-l pointer-events-auto h-full', classNames?.timeUnitSelector)}>
         <div
           ref={ref}
           className={cn('flex flex-col grow-0 shrink-0 items-center h-full w-16 mx-auto', {
@@ -67,9 +73,13 @@ export const TimeUnitSelection = memo(
           })}
         >
           <p
-            className={cn('text-center text-base font-bold text-slate-700', {
-              'text-xs': heightBreakpoint === 'sm' || heightBreakpoint === 'xs',
-            })}
+            className={cn(
+              'text-center text-base font-bold',
+              classNames?.timeUnitText || 'text-slate-700',
+              {
+                'text-xs': heightBreakpoint === 'sm' || heightBreakpoint === 'xs',
+              }
+            )}
           >
             {timeUnit.toUpperCase()}
           </p>
@@ -80,18 +90,25 @@ export const TimeUnitSelection = memo(
               variant={'ghost'}
               onClick={handleTimeUnitPreviousSelect}
               disabled={isPrevBtnDisabled()}
+              className={classNames?.timeUnitButton}
             >
-              <TriangleIcon size={getIconSize(heightBreakpoint)} className="text-slate-700!" />
+              <TriangleIcon
+                size={getIconSize(heightBreakpoint)}
+                className={cn(classNames?.timeUnitText || 'text-slate-700', '!')}
+              />
             </Button>
             <Button
               aria-label="next time unit"
               size={'icon-only'}
               variant={'ghost'}
-              className="rotate-180"
+              className={cn('rotate-180', classNames?.timeUnitButton)}
               onClick={handleTimeUnitNextSelect}
               disabled={isNextBtnDisabled()}
             >
-              <TriangleIcon size={getIconSize(heightBreakpoint)} className="text-slate-700!" />
+              <TriangleIcon
+                size={getIconSize(heightBreakpoint)}
+                className={cn(classNames?.timeUnitText || 'text-slate-700', '!')}
+              />
             </Button>
           </div>
         </div>

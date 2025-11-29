@@ -52,12 +52,7 @@ export const DateSlider = memo(
     initialRange: propInitialRange,
     initialPoint: propInitialPoint,
     granularity = 'day',
-    wrapperClassName,
-    trackActiveClassName,
-    trackBaseClassName,
-    sliderClassName,
-    timeUnitSelectionClassName,
-    timeDisplayClassName,
+    classNames,
     pointHandleIcon,
     rangeHandleIcon,
     scrollable = true,
@@ -411,7 +406,7 @@ export const DateSlider = memo(
 
     return (
       <div
-        className={cn('flex min-w-40', wrapperClassName, {
+        className={cn('flex min-w-40', classNames?.wrapper, {
           'w-full': sliderWidth === 'fill',
         })}
         style={
@@ -428,12 +423,12 @@ export const DateSlider = memo(
         {/* Time display and date selection operation */}
         {timeDisplayEnabled && (
           <TimeDisplay
-            className={cn('pointer-events-auto', timeDisplayClassName)}
             startDate={startDate}
             endDate={endDate}
             position={pointPosition}
             granularity={granularity}
             setDateTime={setDateTime}
+            classNames={classNames}
           />
         )}
 
@@ -450,7 +445,7 @@ export const DateSlider = memo(
                 paddingLeft: trackPaddingX,
                 paddingRight: trackPaddingX,
               }}
-              className={cn('h-full w-full pointer-events-auto', sliderClassName)}
+              className={cn('h-full w-full pointer-events-auto', classNames?.slider)}
             >
               <div className="relative h-full w-full" ref={trackRef}>
                 <SliderTrack
@@ -462,8 +457,6 @@ export const DateSlider = memo(
                   onTrackTouch={handleTrackTouch}
                   scales={scales}
                   scaleUnitConfig={scaleUnitConfig}
-                  baseTrackclassName={trackBaseClassName}
-                  activeTrackClassName={trackActiveClassName}
                   trackRef={trackRef}
                   aria-label={ACCESSIBILITY.TRACK_ARIA_LABEL}
                   startDate={startDate}
@@ -473,12 +466,14 @@ export const DateSlider = memo(
                   endHandleRef={endHandleRef}
                   pointHandleRef={pointHandleRef}
                   labelPersistent={labelPersistent}
+                  classNames={classNames}
                 />
                 <TimeUnitLabels
                   timeLabels={timeLabels}
                   scales={scales}
                   trackWidth={trackWidth}
                   withEndLabel={withEndLabel}
+                  classNames={classNames}
                 />
                 <RenderSliderHandle
                   viewMode={viewMode}
@@ -500,6 +495,7 @@ export const DateSlider = memo(
                   onKeyDown={handleHandleKeyDown}
                   isSliderDragging={isSliderDragging}
                   labelPersistent={labelPersistent}
+                  classNames={classNames}
                 />
               </div>
             </div>
@@ -509,11 +505,11 @@ export const DateSlider = memo(
         {/* toggle time unit */}
         {timeUnitSelectionEnabled && (
           <TimeUnitSelection
-            className={cn('pointer-events-auto h-full', timeUnitSelectionClassName)}
             isMonthValid={checkDateDuration(startDate, endDate).moreThanOneMonth}
             isYearValid={checkDateDuration(startDate, endDate).moreThanOneYear}
             onChange={handleTimeUnitChange}
             initialTimeUnit={initialTimeUnit}
+            classNames={classNames}
           />
         )}
       </div>

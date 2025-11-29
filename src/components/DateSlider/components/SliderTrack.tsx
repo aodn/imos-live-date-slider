@@ -26,9 +26,9 @@ const CursorLine = memo(
       <div
         style={{ left: `${position}%` }}
         className={cn(
-          'hidden md:block absolute top-0 h-full w-px bg-red-500/70 transform -translate-x-0.5 pointer-events-none z-20 transition-opacity duration-150',
+          'hidden md:block absolute top-0 h-full w-px transform -translate-x-0.5 pointer-events-none z-20 transition-opacity duration-150',
           'motion-reduce:transition-none',
-          className
+          className || 'bg-red-500/70' // Default color only if not provided
         )}
         aria-hidden="true"
       />
@@ -42,12 +42,20 @@ const Scales = memo(
   ({
     scales,
     scaleUnitConfig,
+    scaleMarkClassName,
+    scaleMarkMajorClassName,
+    scaleMarkMediumClassName,
+    scaleMarkMinorClassName,
   }: {
     scales?: Array<{ position: number; type: ScaleType }>;
     scaleUnitConfig: {
       width: Record<ScaleType, number>;
       height: Record<ScaleType, number>;
     };
+    scaleMarkClassName?: string;
+    scaleMarkMajorClassName?: string;
+    scaleMarkMediumClassName?: string;
+    scaleMarkMinorClassName?: string;
   }) => {
     const getSize = useCallback(
       (type: ScaleType) => ({
@@ -57,6 +65,26 @@ const Scales = memo(
       [scaleUnitConfig]
     );
 
+    const getScaleClassName = useCallback(
+      (type: ScaleType) => {
+        const baseClass = 'absolute transform -translate-x-0.5 top-0';
+        const typeSpecificClass =
+          type === 'long'
+            ? scaleMarkMajorClassName
+            : type === 'medium'
+              ? scaleMarkMediumClassName
+              : scaleMarkMinorClassName;
+
+        return cn(baseClass, typeSpecificClass || scaleMarkClassName || 'bg-slate-700');
+      },
+      [
+        scaleMarkClassName,
+        scaleMarkMajorClassName,
+        scaleMarkMediumClassName,
+        scaleMarkMinorClassName,
+      ]
+    );
+
     if (!scales?.length) return null;
 
     return (
@@ -64,7 +92,7 @@ const Scales = memo(
         {scales.map((scale, index) => (
           <div
             key={index}
-            className="absolute  bg-slate-700 transform -translate-x-0.5 top-0"
+            className={getScaleClassName(scale.type)}
             style={{ left: `${scale.position}%`, ...getSize(scale.type) }}
             aria-hidden="true"
           />
@@ -84,7 +112,6 @@ export const SliderTrack = memo(
   ({
     onTrackClick,
     onTrackTouch,
-    baseTrackclassName,
     scales,
     scaleUnitConfig,
     trackRef,
@@ -94,6 +121,7 @@ export const SliderTrack = memo(
     startHandleRef,
     endHandleRef,
     pointHandleRef,
+    classNames,
     ...props
   }: UpdatedSliderTrackProps) => {
     const [isHoverTrack, setIsHoverTrack] = useState(false);
@@ -207,8 +235,8 @@ export const SliderTrack = memo(
 
     const baseClassName = useMemo(
       () =>
-        cn('h-full w-full relative overflow-visible cursor-pointer touch-none', baseTrackclassName),
-      [baseTrackclassName]
+        cn('h-full w-full relative overflow-visible cursor-pointer touch-none', classNames?.track),
+      [classNames?.track]
     );
     // Show cursor line when hovering and not dragging
     const showCursorLine = isHoverTrack && !onDragging && !isHandleHover;
@@ -222,22 +250,38 @@ export const SliderTrack = memo(
           className={baseClassName}
           aria-hidden="true"
         >
-          <Scales scales={scales} scaleUnitConfig={scaleUnitConfig} />
+          <Scales
+            scales={scales}
+            scaleUnitConfig={scaleUnitConfig}
+            scaleMarkClassName={classNames?.scaleMark}
+            scaleMarkMajorClassName={classNames?.scaleMarkMajor}
+            scaleMarkMediumClassName={classNames?.scaleMarkMedium}
+            scaleMarkMinorClassName={classNames?.scaleMarkMinor}
+          />
 
           {/* Cursor line */}
-          <CursorLine position={mouseHoverPosition} isVisible={showCursorLine} />
+          <CursorLine
+            position={mouseHoverPosition}
+            isVisible={showCursorLine}
+            className={classNames?.cursorLine}
+          />
 
           {/* Date label */}
           {showDateLabel && (
-            <DateLabel label={dateLabel} position={labelPosition} labelPersistent />
+            <DateLabel
+              label={dateLabel}
+              position={labelPosition}
+              labelPersistent
+              classNames={classNames}
+            />
           )}
 
           {/* Active track */}
           <div
             className={cn(
-              'absolute h-full bg-red-300 rounded-full transition-all duration-200 z-10',
+              'absolute h-full rounded-full transition-all duration-200 z-10',
               'motion-reduce:transition-none',
-              props.activeTrackClassName
+              classNames?.trackActive || 'bg-red-300'
             )}
             style={{ width: `${props.pointPosition}%` }}
           />
@@ -253,22 +297,38 @@ export const SliderTrack = memo(
           onTouchStart={onTrackTouch}
           aria-hidden="true"
         >
-          <Scales scales={scales} scaleUnitConfig={scaleUnitConfig} />
+          <Scales
+            scales={scales}
+            scaleUnitConfig={scaleUnitConfig}
+            scaleMarkClassName={classNames?.scaleMark}
+            scaleMarkMajorClassName={classNames?.scaleMarkMajor}
+            scaleMarkMediumClassName={classNames?.scaleMarkMedium}
+            scaleMarkMinorClassName={classNames?.scaleMarkMinor}
+          />
 
           {/* Cursor line */}
-          <CursorLine position={mouseHoverPosition} isVisible={showCursorLine} />
+          <CursorLine
+            position={mouseHoverPosition}
+            isVisible={showCursorLine}
+            className={classNames?.cursorLine}
+          />
 
           {/* Date label */}
           {showDateLabel && (
-            <DateLabel label={dateLabel} position={labelPosition} labelPersistent />
+            <DateLabel
+              label={dateLabel}
+              position={labelPosition}
+              labelPersistent
+              classNames={classNames}
+            />
           )}
 
           {/* Active track */}
           <div
             className={cn(
-              'absolute h-full bg-blue-500/30 transition-all duration-200 z-10',
+              'absolute h-full transition-all duration-200 z-10',
               'motion-reduce:transition-none',
-              props.activeTrackClassName
+              classNames?.trackActive || 'bg-blue-500/30'
             )}
             style={{
               left: `${props.rangeStart}%`,

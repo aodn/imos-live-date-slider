@@ -10,7 +10,7 @@ export const TimeUnitLabels = memo(
     trackWidth,
     minDistance = 40,
     withEndLabel = true,
-    className = 'bottom-0 whitespace-nowrap text-center text-xs font-medium text-slate-700 shadow-sm absolute',
+    classNames,
   }: TimeLabelsProps) => {
     const getVisibleLabels = useCallback((): TimeLabel[] => {
       if (!timeLabels.length || !scales.length) return [];
@@ -42,7 +42,10 @@ export const TimeUnitLabels = memo(
         {visibleLabels.map(({ date, position }, index) => (
           <span
             key={`${date.getTime()}-${index}`}
-            className={className}
+            className={
+              classNames?.scaleLabel ||
+              'bottom-0 whitespace-nowrap text-center text-xs font-medium text-slate-700 shadow-sm absolute'
+            }
             style={{ left: `${position}%` }}
             aria-hidden="true"
           >

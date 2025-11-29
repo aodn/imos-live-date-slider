@@ -18,7 +18,6 @@ export const SliderHandle = ({
   icon,
   onMouseDown,
   onTouchStart,
-  className,
   ref,
   min,
   max,
@@ -28,6 +27,7 @@ export const SliderHandle = ({
   onFocus,
   isSliderDragging,
   labelPersistent,
+  classNames,
 }: UpdatedSliderHandleProps) => {
   const generateLabelPosition = () => {
     if (!ref.current || handleType !== 'point') return;
@@ -36,17 +36,30 @@ export const SliderHandle = ({
       y: ref.current.getBoundingClientRect().top - 32,
     };
   };
+
+  // Get handle-specific className
+  const handleSpecificClass =
+    handleType === 'point'
+      ? classNames?.handlePoint
+      : handleType === 'start'
+        ? classNames?.handleStart
+        : classNames?.handleEnd;
+
+  const handleBaseClass = classNames?.handle || handleSpecificClass;
+  const handleDraggingClass = onDragging ? classNames?.handleDragging : '';
+
   return (
     <Button
       ref={ref}
       size={'icon'}
       variant={'ghost'}
       className={cn(
-        'group absolute pointer-events-auto z-20 transform  -translate-x-1/2 transition-all duration-50 hover:scale-110 hover:bg-transparent active:bg-transparent touch-none',
-        'focus-visible:outline  focus-visible:outline-offset-2 focus-visible:outline-blue-500',
+        'group absolute pointer-events-auto z-20 transform -translate-x-1/2 transition-all duration-50 hover:scale-110 hover:bg-transparent active:bg-transparent touch-none top-0',
+        'focus-visible:outline focus-visible:outline-offset-2',
         'motion-reduce:transition-none',
-        className,
-        { 'scale-110': onDragging }
+        handleBaseClass,
+        handleSpecificClass,
+        handleDraggingClass || (onDragging ? 'scale-110' : '')
       )}
       style={{ left: `${position}%` }}
       onMouseDown={onMouseDown}
@@ -69,6 +82,7 @@ export const SliderHandle = ({
           label={label}
           immediateDisappear={isSliderDragging}
           labelPersistent={labelPersistent}
+          classNames={classNames}
         />
       )}
     </Button>
@@ -99,13 +113,13 @@ export const RenderSliderHandle = memo<UpdatedRenderSliderHandleProps>(
     onKeyDown,
     isSliderDragging,
     labelPersistent,
+    classNames,
   }) => {
     const commonProps = {
-      className: 'top-0',
-      labelClassName: '-top-8 bg-red-600',
       onFocus: onHandleFocus,
       min: 0,
       max: 100,
+      classNames,
     };
 
     return (

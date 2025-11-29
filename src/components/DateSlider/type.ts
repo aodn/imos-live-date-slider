@@ -48,6 +48,76 @@ export type SliderExposedMethod = {
   focusHandle: (handleType: DragHandle) => void;
 };
 
+/**
+ * Comprehensive className customization for all DateSlider elements.
+ * All properties are optional and support full Tailwind CSS utilities.
+ */
+export type DateSliderClassNames = {
+  // Container
+  /** Main wrapper element containing the entire slider */
+  wrapper?: string;
+  /** Slider container element */
+  slider?: string;
+
+  // Track
+  /** Base track element */
+  track?: string;
+  /** Active portion of the track (point/range indicator) */
+  trackActive?: string;
+  /** Inactive/background portion of the track */
+  trackInactive?: string;
+
+  // Handles
+  /** Base styles for all handles */
+  handle?: string;
+  /** Point handle specific styles */
+  handlePoint?: string;
+  /** Range start handle specific styles */
+  handleStart?: string;
+  /** Range end handle specific styles */
+  handleEnd?: string;
+  /** Applied when a handle is being dragged */
+  handleDragging?: string;
+  /** Icon wrapper inside handle */
+  handleIcon?: string;
+
+  // Labels & Text
+  /** Hover date label (tooltip) */
+  dateLabel?: string;
+  /** Text inside the date label */
+  dateLabelText?: string;
+  /** Scale tick mark labels */
+  scaleLabel?: string;
+
+  // Visual Indicators
+  /** Vertical cursor line on hover */
+  cursorLine?: string;
+  /** Base styles for all scale marks */
+  scaleMark?: string;
+  /** Major scale tick marks */
+  scaleMarkMajor?: string;
+  /** Minor scale tick marks */
+  scaleMarkMinor?: string;
+  /** Medium scale tick marks */
+  scaleMarkMedium?: string;
+
+  // Time Unit Selection
+  /** Time unit selector container */
+  timeUnitSelector?: string;
+  /** Time unit selection buttons */
+  timeUnitButton?: string;
+  /** Active time unit button */
+  timeUnitButtonActive?: string;
+  /** Time unit text labels */
+  timeUnitText?: string;
+
+  // Time Display
+  /** Time display container */
+  timeDisplay?: string;
+  /** Text inside time display */
+  timeDisplayText?: string;
+};
+
 export type SliderProps = {
   viewMode: ViewMode;
   startDate: Date; // Must be UTC Date
@@ -56,12 +126,24 @@ export type SliderProps = {
   initialRange?: { start: Date; end: Date }; // Must be UTC Dates
   initialPoint?: Date; // Must be UTC Date
   granularity?: DateGranularity; // Controls display granularity (day/hour/minute)
-  wrapperClassName?: string;
-  sliderClassName?: string;
-  timeUnitSelectionClassName?: string;
-  timeDisplayClassName?: string;
-  trackBaseClassName?: string;
-  trackActiveClassName?: string;
+
+  // Styling
+  /**
+   * Comprehensive className customization for all slider elements.
+   * Use this for full control over component styling with Tailwind CSS.
+   * @example
+   * ```tsx
+   * <DateSlider
+   *   classNames={{
+   *     wrapper: 'bg-white shadow-lg',
+   *     trackActive: 'bg-green-500',
+   *     handle: 'bg-white shadow-xl',
+   *   }}
+   * />
+   * ```
+   */
+  classNames?: DateSliderClassNames;
+
   pointHandleIcon?: ReactNode;
   rangeHandleIcon?: ReactNode;
   onChange: (selection: SelectionResult) => void;
@@ -87,7 +169,6 @@ export type NumOfScales = { short: number; medium: number; long: number };
 type BaseSliderTrackProps = {
   onTrackClick: (e: React.MouseEvent) => void;
   onTrackTouch: (e: React.TouchEvent) => void;
-  baseTrackclassName?: string;
   scales: Scale[];
   scaleUnitConfig: ScaleUnitConfig;
   trackRef: RefObject<HTMLDivElement | null>;
@@ -98,11 +179,11 @@ type BaseSliderTrackProps = {
   endHandleRef: React.RefObject<HTMLButtonElement | null>;
   pointHandleRef: React.RefObject<HTMLButtonElement | null>;
   labelPersistent?: boolean;
+  classNames?: DateSliderClassNames;
 };
 
 type PointModeProps = {
   mode: 'point';
-  activeTrackClassName?: string;
   pointPosition: number;
 };
 
@@ -111,24 +192,18 @@ type CombinedModeProps = {
   rangeStart: number;
   rangeEnd: number;
   pointPosition: number;
-  inactiveTrackClassName?: string;
-  activeTrackClassName?: string;
 };
 
 type RangeModeProps = {
   mode: 'range';
   rangeStart: number;
   rangeEnd: number;
-  inactiveTrackClassName?: string;
-  activeTrackClassName?: string;
 };
 
 export type SliderTrackProps = BaseSliderTrackProps &
   (PointModeProps | RangeModeProps | CombinedModeProps);
 
 export type SliderHandleProps = {
-  className?: string;
-  labelClassName?: string;
   onDragging: boolean;
   position: number;
   label: string;
@@ -144,6 +219,7 @@ export type SliderHandleProps = {
   onFocus: (event: React.FocusEvent<HTMLButtonElement>) => void;
   viewMode?: 'point' | 'range' | 'combined';
   isSliderDragging?: boolean;
+  classNames?: DateSliderClassNames;
 };
 
 export type RenderSliderHandleProps = {
@@ -166,6 +242,7 @@ export type RenderSliderHandleProps = {
   onKeyDown: (handle: DragHandle) => (e: React.KeyboardEvent) => void;
   isSliderDragging: boolean;
   labelPersistent?: boolean;
+  classNames?: DateSliderClassNames;
 };
 
 export type TimeUnitSelectionProps = {
@@ -173,7 +250,7 @@ export type TimeUnitSelectionProps = {
   isMonthValid: boolean;
   isYearValid: boolean;
   onChange: (timeUnit: TimeUnit) => void;
-  className?: string;
+  classNames?: DateSliderClassNames;
 };
 
 export type TimeLabelsProps = {
@@ -181,6 +258,6 @@ export type TimeLabelsProps = {
   scales: Scale[];
   trackWidth: number;
   minDistance?: number;
-  className?: string;
   withEndLabel?: boolean;
+  classNames?: DateSliderClassNames;
 };

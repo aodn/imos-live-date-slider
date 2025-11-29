@@ -4,25 +4,25 @@ import { useMemo } from 'react';
 import { Button } from '@/components/Button';
 import { cn } from '@/utils';
 
-import type { DateGranularity, DragHandle } from '../type';
+import type { DateGranularity, DateSliderClassNames, DragHandle } from '../type';
 import { addTime, formatForDisplay, getDateFromPercent } from '../utils';
 
 type TimeDisplayProps = {
-  className?: string;
   position: number;
   startDate: Date;
   endDate: Date;
   granularity: DateGranularity;
   setDateTime: (date: Date, target?: DragHandle) => void;
+  classNames?: DateSliderClassNames;
 };
 
 export const TimeDisplay = ({
-  className,
   position,
   startDate,
   endDate,
   granularity,
   setDateTime,
+  classNames,
 }: TimeDisplayProps) => {
   const dateLabel = useMemo(() => {
     const date = getDateFromPercent(position, startDate, endDate);
@@ -39,9 +39,17 @@ export const TimeDisplay = ({
   };
 
   return (
-    <div className={cn('flex rounded-xl overflow-hidden', className)}>
+    <div
+      className={cn('flex rounded-xl overflow-hidden pointer-events-auto', classNames?.timeDisplay)}
+    >
       <div className="h-full flex items-center justify-center md:w-28">
-        <p className="text-imos-grey font-semibold text-xs md:text-base">{dateLabel}</p>
+        <p
+          className={cn(
+            classNames?.timeDisplayText || 'text-imos-grey font-semibold text-xs md:text-base'
+          )}
+        >
+          {dateLabel}
+        </p>
       </div>
       <div className="h-full  items-center hidden md:flex">
         <Button variant="ghost" onClick={() => handleDateUpdate('backward')} className="p-0!">
