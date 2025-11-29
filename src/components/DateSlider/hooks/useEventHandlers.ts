@@ -112,7 +112,6 @@ export function useEventHandlers(
       if (!isDragging) return;
 
       if ('touches' in e) {
-        // TouchEvent
         e.preventDefault(); // prevent scrolling when touch event
       }
 

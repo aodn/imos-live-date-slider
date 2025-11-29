@@ -44,7 +44,7 @@ export type ScaleUnitConfig = {
 };
 
 export type SliderExposedMethod = {
-  setDateTime: (date: Date, target?: 'point' | 'rangeStart' | 'rangeEnd') => void;
+  setDateTime: (date: Date, target?: DragHandle) => void;
   focusHandle: (handleType: DragHandle) => void;
 };
 
@@ -77,6 +77,7 @@ export type SliderProps = {
   timeUnitSelectionEnabled?: boolean;
   timeDisplayEnabled?: boolean;
   freeSelectionOnTrackClick?: boolean; //if true, the datetime can be freely selected when click on track, if false, the selection will be limited to datetime per scale units.
+  labelPersistent?: boolean;
 };
 
 export type ScaleType = 'short' | 'medium' | 'long';
@@ -96,6 +97,7 @@ type BaseSliderTrackProps = {
   startHandleRef: React.RefObject<HTMLButtonElement | null>;
   endHandleRef: React.RefObject<HTMLButtonElement | null>;
   pointHandleRef: React.RefObject<HTMLButtonElement | null>;
+  labelPersistent?: boolean;
 };
 
 type PointModeProps = {
@@ -137,10 +139,11 @@ export type SliderHandleProps = {
   min?: number;
   max?: number;
   value?: number;
-  handleType: string;
+  handleType: DragHandle;
   onKeyDown: (e: React.KeyboardEvent) => void;
   onFocus: (event: React.FocusEvent<HTMLButtonElement>) => void;
   viewMode?: 'point' | 'range' | 'combined';
+  isSliderDragging?: boolean;
 };
 
 export type RenderSliderHandleProps = {
@@ -161,6 +164,8 @@ export type RenderSliderHandleProps = {
   onMouseDown: (handle: DragHandle) => (e: React.MouseEvent) => void;
   onTouchStart: (handle: DragHandle) => (e: React.TouchEvent) => void;
   onKeyDown: (handle: DragHandle) => (e: React.KeyboardEvent) => void;
+  isSliderDragging: boolean;
+  labelPersistent?: boolean;
 };
 
 export type TimeUnitSelectionProps = {

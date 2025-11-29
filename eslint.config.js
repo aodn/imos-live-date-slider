@@ -7,7 +7,6 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import react from 'eslint-plugin-react';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import prettier from 'eslint-plugin-prettier/recommended';
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
 
 export default defineConfig(
   {
@@ -31,7 +30,6 @@ export default defineConfig(
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'jsx-a11y': jsxA11y,
-      'simple-import-sort': simpleImportSort,
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -53,9 +51,6 @@ export default defineConfig(
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/consistent-type-imports': 'error',
-      'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error',
-      'sort-imports': 'off',
     },
     settings: {
       react: {

@@ -3,7 +3,7 @@ import { memo, useCallback, useMemo } from 'react';
 import type { TimeLabel, TimeLabelsProps } from '../type';
 import { formatForDisplay } from '../utils';
 
-export const TimeLabels = memo(
+export const TimeUnitLabels = memo(
   ({
     timeLabels,
     scales,
@@ -54,4 +54,4 @@ export const TimeLabels = memo(
   }
 );
 
-TimeLabels.displayName = 'TimeLabels';
+TimeUnitLabels.displayName = 'TimeUnitLabels';

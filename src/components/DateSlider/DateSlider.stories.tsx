@@ -4,7 +4,7 @@ import { memo, useCallback, useRef, useState } from 'react';
 
 import { Button } from '../Button';
 import { DateSlider } from './DateSlider';
-import type { SelectionResult, SliderProps, TimeUnit } from './type';
+import type { SelectionResult, SliderExposedMethod, SliderProps, TimeUnit } from './type';
 import { toUTCDate } from './utils';
 
 const meta: Meta<typeof DateSlider> = {
@@ -78,24 +78,24 @@ SelectionDisplay.displayName = 'SelectionDisplay';
 // Memoized control buttons component
 const ControlButtons = memo(
   ({
-    sliderRef,
+    sliderMethodRef,
     viewMode,
   }: {
-    sliderRef: React.RefObject<any>;
+    sliderMethodRef: React.RefObject<SliderExposedMethod | null>;
     viewMode: SliderProps['viewMode'];
   }) => {
     const handleSetDateTime = useCallback(
-      (date: Date, target?: 'point' | 'rangeStart' | 'rangeEnd') => {
-        sliderRef.current?.setDateTime(date, target);
+      (date: Date, target?: 'point' | 'start' | 'end') => {
+        sliderMethodRef.current?.setDateTime(date, target);
       },
-      [sliderRef]
+      [sliderMethodRef]
     );
 
     const handleFocusHandle = useCallback(
-      (handle: 'point' | 'rangeStart' | 'rangeEnd') => {
-        sliderRef.current?.focusHandle(handle);
+      (handle: 'point' | 'start' | 'end') => {
+        sliderMethodRef.current?.focusHandle(handle);
       },
-      [sliderRef]
+      [sliderMethodRef]
     );
 
     const buttonStyle = { marginLeft: 8, marginBottom: 8 };
@@ -116,21 +116,21 @@ const ControlButtons = memo(
         {(viewMode === 'range' || viewMode === 'combined') && (
           <>
             <Button
-              onClick={() => handleSetDateTime(toUTCDate('2021-06-01'), 'rangeStart')}
+              onClick={() => handleSetDateTime(toUTCDate('2021-06-01'), 'start')}
               size="sm"
               style={buttonStyle}
             >
               Set Range Start to 2021-06-01
             </Button>
             <Button
-              onClick={() => handleSetDateTime(toUTCDate('2021-09-01'), 'rangeEnd')}
+              onClick={() => handleSetDateTime(toUTCDate('2021-09-01'), 'end')}
               size="sm"
               style={buttonStyle}
             >
               Set Range End to 2021-09-01
             </Button>
             <Button
-              onClick={() => handleFocusHandle('rangeStart')}
+              onClick={() => handleFocusHandle('start')}
               variant="outline"
               size="sm"
               style={buttonStyle}
@@ -138,7 +138,7 @@ const ControlButtons = memo(
               Focus Start Handle
             </Button>
             <Button
-              onClick={() => handleFocusHandle('rangeEnd')}
+              onClick={() => handleFocusHandle('end')}
               variant="outline"
               size="sm"
               style={buttonStyle}
@@ -166,7 +166,7 @@ ControlButtons.displayName = 'ControlButtons';
 // Enhanced template with better performance and accessibility
 const DateSliderTemplate = (args: Partial<SliderProps>) => {
   const [selection, setSelection] = useState<SelectionResult>();
-  const sliderRef = useRef<any>(null);
+  const sliderMethodRef = useRef<SliderExposedMethod>(null);
 
   const handleSelectionChange = useCallback((newSelection: SelectionResult) => {
     setSelection(newSelection);
@@ -197,14 +197,14 @@ const DateSliderTemplate = (args: Partial<SliderProps>) => {
           initialTimeUnit={args.initialTimeUnit ?? 'day'}
           granularity={args.granularity ?? 'day'}
           onChange={handleSelectionChange}
-          imperativeHandleRef={sliderRef}
+          imperativeHandleRef={sliderMethodRef}
           pointHandleIcon={<Circle />}
           rangeHandleIcon={<MoveHorizontal />}
         />
 
         <SelectionDisplay selection={selection} />
 
-        <ControlButtons sliderRef={sliderRef} viewMode={args.viewMode || 'point'} />
+        <ControlButtons sliderMethodRef={sliderMethodRef} viewMode={args.viewMode || 'point'} />
       </div>
     </div>
   );
@@ -365,8 +365,8 @@ const FrostedGlassTemplate = (args: Partial<SliderProps>) => {
   }, []);
 
   const startDate = args.startDate ?? toUTCDate('2020-01-01');
-  const endDate = args.endDate ?? toUTCDate('2024-12-31');
-  const date = args.initialPoint ?? toUTCDate('2022-06-15');
+  const endDate = args.endDate ?? toUTCDate('2020-02-10');
+  const date = args.initialPoint ?? toUTCDate('2020-01-15');
 
   return (
     <div
@@ -401,6 +401,7 @@ const FrostedGlassTemplate = (args: Partial<SliderProps>) => {
         withEndLabel={false}
         timeUnitSelectionEnabled={false}
         timeDisplayEnabled
+        {...args}
       />
     </div>
   );
@@ -411,8 +412,9 @@ export const FrostedGlass: Story = {
   args: {
     viewMode: 'point',
     startDate: toUTCDate('2020-01-01'),
-    endDate: toUTCDate('2024-12-31'),
+    endDate: toUTCDate('2020-02-10'),
     initialTimeUnit: 'day' as TimeUnit,
-    initialPoint: toUTCDate('2022-06-15'),
+    initialPoint: toUTCDate('2020-01-15'),
+    timeUnitSelectionEnabled: true,
   },
 };

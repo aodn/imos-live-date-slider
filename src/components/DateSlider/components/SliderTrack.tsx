@@ -1,8 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
-
 import { cn } from '@/utils';
-
 import type { ScaleType, SliderTrackProps } from '../type';
 import {
   calculateLabelPosition,
@@ -11,37 +8,7 @@ import {
   getPercentageFromMouseEvent,
   getPercentageFromTouchEvent,
 } from '../utils';
-
-export const DateLabel = memo(
-  ({
-    position,
-    label,
-    labelClassName,
-  }: {
-    position?: { x: number; y: number };
-    label?: string;
-    labelClassName?: string;
-  }) => {
-    if (!position || !label) return null;
-
-    return createPortal(
-      <div
-        style={{ left: position.x, top: position.y }}
-        className={cn(
-          'hidden md:block fixed z-50 transform -translate-x-1/2 bg-red-600 text-white text-xs px-2 py-1 rounded whitespace-nowrap pointer-events-none',
-          labelClassName
-        )}
-        role="tooltip"
-        aria-live="polite"
-      >
-        {label}
-      </div>,
-      document.body
-    );
-  }
-);
-
-DateLabel.displayName = 'DateLabel';
+import { DateLabel } from './DateLabel';
 
 const CursorLine = memo(
   ({
@@ -68,6 +35,7 @@ const CursorLine = memo(
     );
   }
 );
+
 CursorLine.displayName = 'CursorLine';
 
 const Scales = memo(
@@ -260,7 +228,9 @@ export const SliderTrack = memo(
           <CursorLine position={mouseHoverPosition} isVisible={showCursorLine} />
 
           {/* Date label */}
-          {showDateLabel && <DateLabel label={dateLabel} position={labelPosition} />}
+          {showDateLabel && (
+            <DateLabel label={dateLabel} position={labelPosition} labelPersistent />
+          )}
 
           {/* Active track */}
           <div
@@ -289,7 +259,9 @@ export const SliderTrack = memo(
           <CursorLine position={mouseHoverPosition} isVisible={showCursorLine} />
 
           {/* Date label */}
-          {showDateLabel && <DateLabel label={dateLabel} position={labelPosition} />}
+          {showDateLabel && (
+            <DateLabel label={dateLabel} position={labelPosition} labelPersistent />
+          )}
 
           {/* Active track */}
           <div

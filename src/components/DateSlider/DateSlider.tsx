@@ -15,7 +15,7 @@ import {
   RenderSliderHandle,
   SliderTrack,
   TimeDisplay,
-  TimeLabels,
+  TimeUnitLabels,
   TimeUnitSelection,
 } from './components';
 import {
@@ -73,6 +73,7 @@ export const DateSlider = memo(
     timeUnitSelectionEnabled = true,
     freeSelectionOnTrackClick = false,
     timeDisplayEnabled = false,
+    labelPersistent,
   }: SliderProps) => {
     const [dimensions, setDimensions] = useState({ parent: 0, slider: 0 });
     const [timeUnit, setTimeUnit] = useState<TimeUnit>(initialTimeUnit);
@@ -260,7 +261,7 @@ export const DateSlider = memo(
      * @param target - The target handle ('point', 'rangeStart', 'rangeEnd')
      */
     const setDateTime = useCallback(
-      (date: Date, target?: 'point' | 'rangeStart' | 'rangeEnd') => {
+      (date: Date, target?: DragHandle) => {
         // Date is expected to be UTC, no conversion needed
         const percentage = getPercentFromDate(date, startDate, endDate);
 
@@ -273,7 +274,7 @@ export const DateSlider = memo(
             case 'range': {
               const distanceToStart = Math.abs(percentage - rangeStartRef.current);
               const distanceToEnd = Math.abs(percentage - rangeEndRef.current);
-              actualTarget = distanceToStart < distanceToEnd ? 'rangeStart' : 'rangeEnd';
+              actualTarget = distanceToStart < distanceToEnd ? 'start' : 'end';
               break;
             }
             case 'combined':
@@ -284,12 +285,12 @@ export const DateSlider = memo(
         const clampPercentage = clampPercent(percentage, PERCENTAGE.MAX);
 
         switch (actualTarget) {
-          case 'rangeStart': {
+          case 'start': {
             const newStart = clamp(clampPercentage, 0, rangeEndRef.current - minGapPercent);
             setRangeStart(newStart);
             break;
           }
-          case 'rangeEnd': {
+          case 'end': {
             const newEnd = clamp(clampPercentage, 100, rangeStartRef.current + minGapPercent);
             setRangeEnd(newEnd);
             break;
@@ -471,8 +472,9 @@ export const DateSlider = memo(
                   startHandleRef={startHandleRef}
                   endHandleRef={endHandleRef}
                   pointHandleRef={pointHandleRef}
+                  labelPersistent={labelPersistent}
                 />
-                <TimeLabels
+                <TimeUnitLabels
                   timeLabels={timeLabels}
                   scales={scales}
                   trackWidth={trackWidth}
@@ -496,6 +498,8 @@ export const DateSlider = memo(
                   onMouseDown={handleMouseDown}
                   onTouchStart={handleTouchStart}
                   onKeyDown={handleHandleKeyDown}
+                  isSliderDragging={isSliderDragging}
+                  labelPersistent={labelPersistent}
                 />
               </div>
             </div>

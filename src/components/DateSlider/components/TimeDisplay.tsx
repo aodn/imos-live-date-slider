@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { Button } from '@/components/Button';
 import { cn } from '@/utils';
 
-import type { DateGranularity } from '../type';
+import type { DateGranularity, DragHandle } from '../type';
 import { addTime, formatForDisplay, getDateFromPercent } from '../utils';
 
 type TimeDisplayProps = {
@@ -13,7 +13,7 @@ type TimeDisplayProps = {
   startDate: Date;
   endDate: Date;
   granularity: DateGranularity;
-  setDateTime: (date: Date, target?: 'point' | 'rangeStart' | 'rangeEnd') => void;
+  setDateTime: (date: Date, target?: DragHandle) => void;
 };
 
 export const TimeDisplay = ({
@@ -45,10 +45,10 @@ export const TimeDisplay = ({
       </div>
       <div className="h-full  items-center hidden md:flex">
         <Button variant="ghost" onClick={() => handleDateUpdate('backward')} className="p-0!">
-          <ArrowDownIcon className="rotate-90" color="imos-grey" size="xxl" />
+          <ArrowDownIcon className="rotate-90 text-black" />
         </Button>
         <Button variant="ghost" onClick={() => handleDateUpdate('forward')} className="p-0!">
-          <ArrowDownIcon className="rotate-270" color="imos-grey" size="xxl" />
+          <ArrowDownIcon className="rotate-270 text-black" />
         </Button>
       </div>
     </div>

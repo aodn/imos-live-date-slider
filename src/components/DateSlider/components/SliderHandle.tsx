@@ -1,10 +1,9 @@
 import { memo } from 'react';
-
 import { cn } from '@/utils';
-
 import { Button } from '../../Button';
 import type { RenderSliderHandleProps, SliderHandleProps } from '../type';
 import { formatForDisplay, getDateFromPercent } from '../utils';
+import { DateLabel } from './DateLabel';
 
 // Updated SliderHandleProps type to include touch event handlers
 type UpdatedSliderHandleProps = SliderHandleProps & {
@@ -27,7 +26,16 @@ export const SliderHandle = ({
   handleType,
   onKeyDown,
   onFocus,
+  isSliderDragging,
+  labelPersistent,
 }: UpdatedSliderHandleProps) => {
+  const generateLabelPosition = () => {
+    if (!ref.current || handleType !== 'point') return;
+    return {
+      x: ref.current.getBoundingClientRect().left + ref.current.getBoundingClientRect().width / 2,
+      y: ref.current.getBoundingClientRect().top - 32,
+    };
+  };
   return (
     <Button
       ref={ref}
@@ -55,6 +63,14 @@ export const SliderHandle = ({
       onFocus={onFocus}
     >
       {icon}
+      {!onDragging && handleType === 'point' && (
+        <DateLabel
+          position={generateLabelPosition()}
+          label={label}
+          immediateDisappear={isSliderDragging}
+          labelPersistent={labelPersistent}
+        />
+      )}
     </Button>
   );
 };
@@ -81,6 +97,8 @@ export const RenderSliderHandle = memo<UpdatedRenderSliderHandleProps>(
     onMouseDown,
     onTouchStart,
     onKeyDown,
+    isSliderDragging,
+    labelPersistent,
   }) => {
     const commonProps = {
       className: 'top-0',
@@ -110,8 +128,9 @@ export const RenderSliderHandle = memo<UpdatedRenderSliderHandleProps>(
               onMouseDown={onMouseDown('start')}
               onTouchStart={onTouchStart('start')}
               value={rangeStart}
-              handleType="range start"
+              handleType="start"
               onKeyDown={onKeyDown('start')}
+              labelPersistent={labelPersistent}
             />
             <SliderHandle
               viewMode={viewMode}
@@ -129,8 +148,9 @@ export const RenderSliderHandle = memo<UpdatedRenderSliderHandleProps>(
               onMouseDown={onMouseDown('end')}
               onTouchStart={onTouchStart('end')}
               value={rangeEnd}
-              handleType="range end"
+              handleType="end"
               onKeyDown={onKeyDown('end')}
+              labelPersistent={labelPersistent}
             />
           </>
         )}
@@ -154,6 +174,8 @@ export const RenderSliderHandle = memo<UpdatedRenderSliderHandleProps>(
             value={pointPosition}
             handleType="point"
             onKeyDown={onKeyDown('point')}
+            isSliderDragging={isSliderDragging}
+            labelPersistent={labelPersistent}
           />
         )}
       </>
