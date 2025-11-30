@@ -29,3 +29,4 @@ storybook-static
 # Build
 build
 coverage
+*.tgz

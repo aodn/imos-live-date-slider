@@ -35,7 +35,7 @@ export default defineConfig({
       },
     },
     sourcemap: false, // Don't generate source maps for production
-    // Clear output directory before build
-    emptyOutDir: true,
+    // Don't clear output directory - preserve .d.ts files from tsc
+    emptyOutDir: false,
   },
 });
