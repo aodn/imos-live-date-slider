@@ -20,7 +20,8 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist/**/*.{js,mjs,cjs,css,d.ts}",
+    "!dist/**/*.map"
   ],
   "scripts": {
     "dev": "vite",

@@ -19,7 +19,12 @@ export default defineConfig({
     },
     rollupOptions: {
       // Externalize deps that shouldn't be bundled
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'lucide-react', // Don't bundle icons
+      ],
       output: {
         // Global vars to use in UMD build for externalized deps
         globals: {
@@ -29,7 +34,7 @@ export default defineConfig({
         },
       },
     },
-    sourcemap: true,
+    sourcemap: false, // Don't generate source maps for production
     // Clear output directory before build
     emptyOutDir: true,
   },
