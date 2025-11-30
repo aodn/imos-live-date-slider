@@ -138,7 +138,11 @@ const ControlButtons = memo(
       <div className="mt-4 flex flex-wrap gap-2">
         {(viewMode === 'point' || viewMode === 'combined') && (
           <>
-            <Button onClick={() => handleSetDateTime(toUTCDate('2022-01-01'), 'point')} size="sm">
+            <Button
+              onClick={() => handleSetDateTime(toUTCDate('2022-01-01'), 'point')}
+              variant="outline"
+              size="sm"
+            >
               Set Point to 2022-01-01
             </Button>
             <Button onClick={() => handleFocusHandle('point')} variant="outline" size="sm">
@@ -149,10 +153,18 @@ const ControlButtons = memo(
 
         {(viewMode === 'range' || viewMode === 'combined') && (
           <>
-            <Button onClick={() => handleSetDateTime(toUTCDate('2021-06-01'), 'start')} size="sm">
+            <Button
+              onClick={() => handleSetDateTime(toUTCDate('2021-06-01'), 'start')}
+              variant="outline"
+              size="sm"
+            >
               Set Range Start to 2021-06-01
             </Button>
-            <Button onClick={() => handleSetDateTime(toUTCDate('2021-09-01'), 'end')} size="sm">
+            <Button
+              onClick={() => handleSetDateTime(toUTCDate('2021-09-01'), 'end')}
+              variant="outline"
+              size="sm"
+            >
               Set Range End to 2021-09-01
             </Button>
             <Button onClick={() => handleFocusHandle('start')} variant="outline" size="sm">
@@ -831,18 +843,18 @@ const AccessibilityTemplate = () => {
           <div className="p-4 bg-gray-50 rounded border border-gray-200">
             <h3 className="font-semibold text-gray-900 mb-3">Programmatic Control</h3>
             <div className="space-y-2">
-              <button
+              <Button
                 onClick={handleFocusStart}
                 className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
               >
                 Focus Start Handle
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleFocusEnd}
                 className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
               >
                 Focus End Handle
-              </button>
+              </Button>
             </div>
           </div>
         </div>
