@@ -62,9 +62,12 @@ export const DateSlider = memo(
     granularity = 'day',
     imperativeRef: imperativeHandleRef,
   }: SliderProps) => {
-    // Extract icon config with defaults
-    const pointHandleIcon = icons?.point;
-    const rangeHandleIcon = icons?.rangeStart ?? icons?.rangeEnd;
+    // Extract icon config with defaults - safely handle discriminated union
+    const pointHandleIcon = icons && 'point' in icons ? icons.point : undefined;
+    const rangeHandleIcon =
+      icons && ('rangeStart' in icons || 'rangeEnd' in icons)
+        ? (icons.rangeStart ?? icons.rangeEnd)
+        : undefined;
 
     // Extract behavior config with defaults
     const scrollable = behavior?.scrollable ?? true;

@@ -195,16 +195,9 @@ export type CombinedValue = {
 export type SliderValue = PointValue | RangeValue | CombinedValue;
 
 /**
- * Main props for DateSlider component with organized config groups
+ * Common props shared across all slider modes
  */
-export type SliderProps = {
-  // ===== Core Props (Required) =====
-  /** Slider mode - point, range, or combined */
-  mode: 'point' | 'range' | 'combined';
-  /** Current value of the slider - optional, will use defaults based on mode if not provided */
-  value?: SliderValue;
-  /** Callback when value changes */
-  onChange: (value: SliderValue) => void;
+type CommonSliderProps = {
   /** Minimum date (must be UTC) */
   min: Date;
   /** Maximum date (must be UTC) */
@@ -228,21 +221,6 @@ export type SliderProps = {
    * ```
    */
   classNames?: DateSliderClassNames;
-
-  /**
-   * Icon configuration for slider handles
-   * @example
-   * ```tsx
-   * <DateSlider
-   *   icons={{
-   *     point: <CircleIcon />,
-   *     rangeStart: <ChevronLeftIcon />,
-   *     rangeEnd: <ChevronRightIcon />,
-   *   }}
-   * />
-   * ```
-   */
-  icons?: IconsConfig;
 
   /**
    * Behavior configuration for slider interactions
@@ -294,6 +272,90 @@ export type SliderProps = {
   /** Imperative API reference for external control */
   imperativeRef?: React.Ref<SliderExposedMethod>;
 };
+
+/**
+ * Point mode specific props
+ * Only point icon is relevant in this mode
+ */
+type PointModeSliderProps = {
+  /** Mode identifier for point selection */
+  mode: 'point';
+  /** Current point value - optional, defaults to min date if not provided */
+  value?: PointValue;
+  /** Callback when value changes */
+  onChange: (value: SliderValue) => void;
+  /** Icon configuration - only point icon is used */
+  icons?: {
+    point?: ReactNode;
+    rangeStart?: never;
+    rangeEnd?: never;
+  };
+};
+
+/**
+ * Range mode specific props
+ * Only range icons are relevant in this mode
+ */
+type RangeModeSliderProps = {
+  /** Mode identifier for range selection */
+  mode: 'range';
+  /** Current range value - optional, defaults to min-max range if not provided */
+  value?: RangeValue;
+  /** Callback when value changes */
+  onChange: (value: SliderValue) => void;
+  /** Icon configuration - only range icons are used */
+  icons?: {
+    point?: never;
+    rangeStart?: ReactNode;
+    rangeEnd?: ReactNode;
+  };
+};
+
+/**
+ * Combined mode specific props
+ * All icons can be used in this mode
+ */
+type CombinedModeSliderProps = {
+  /** Mode identifier for combined point and range selection */
+  mode: 'combined';
+  /** Current combined value - optional, defaults to sensible values if not provided */
+  value?: CombinedValue;
+  /** Callback when value changes */
+  onChange: (value: SliderValue) => void;
+  /** Icon configuration - all icons can be used */
+  icons?: {
+    point?: ReactNode;
+    rangeStart?: ReactNode;
+    rangeEnd?: ReactNode;
+  };
+};
+
+/**
+ * Main props for DateSlider component with discriminated union for type safety
+ * TypeScript will only allow props valid for the selected mode
+ *
+ * @example Point mode
+ * ```tsx
+ * <DateSlider
+ *   mode="point"
+ *   value={{ point: new Date() }}
+ *   onChange={(value) => console.log(value.point)}  // TypeScript knows value has 'point'
+ *   icons={{ point: <Icon /> }}  // Only point icon allowed
+ * />
+ * ```
+ *
+ * @example Range mode
+ * ```tsx
+ * <DateSlider
+ *   mode="range"
+ *   value={{ start: date1, end: date2 }}
+ *   onChange={(value) => console.log(value.start, value.end)}  // TypeScript knows value has 'start' and 'end'
+ *   icons={{ rangeStart: <Icon />, rangeEnd: <Icon /> }}  // Only range icons allowed
+ * />
+ * ```
+ */
+export type SliderProps = (PointModeSliderProps | RangeModeSliderProps | CombinedModeSliderProps) &
+  CommonSliderProps;
 
 export type ScaleType = 'short' | 'medium' | 'long';
 export type Scale = { position: number; type: ScaleType; date: Date };
