@@ -439,12 +439,6 @@ export const getAllScalesPercentage = (
  */
 export type DateGranularity = 'day' | 'hour' | 'minute';
 
-// ============================================================================
-// PUBLIC UTILITIES FOR CONSUMERS
-// These functions help convert external date formats to UTC Date objects
-// that DateSlider requires
-// ============================================================================
-
 /**
  * Convert an ISO date string (YYYY-MM-DD) to UTC midnight
  *
