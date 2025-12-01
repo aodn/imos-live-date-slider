@@ -479,11 +479,18 @@ export const DateSlider = memo(
         )}
 
         {/* Date slider */}
-        <div ref={sliderContainerRef} className="overflow-hidden h-full flex-1 rounded-2xl">
+        <div
+          ref={sliderContainerRef}
+          className="overflow-hidden flex-1 rounded-2xl"
+          style={{ height: '100%' }}
+        >
           <div
-            className="h-full"
             // if track width is fixed, it will fill the width of slider container, it cannot be scrolled.
-            style={isTrackFixedWidth ? { width: '100%' } : { width: trackWidth }}
+            style={
+              isTrackFixedWidth
+                ? { width: '100%', height: '100%' }
+                : { width: trackWidth, height: '100%' }
+            }
             ref={sliderRef}
             {...dragHandlers}
           >
@@ -491,10 +498,12 @@ export const DateSlider = memo(
               style={{
                 paddingLeft: trackPaddingX,
                 paddingRight: trackPaddingX,
+                height: '100%',
+                width: '100%',
               }}
-              className={cn('h-full w-full pointer-events-auto', classNames?.slider)}
+              className={cn('pointer-events-auto', classNames?.slider)}
             >
-              <div className="relative h-full w-full" ref={trackRef}>
+              <div className="relative" style={{ height: '100%', width: '100%' }} ref={trackRef}>
                 <SliderTrack
                   mode={viewMode}
                   pointPosition={pointPosition}

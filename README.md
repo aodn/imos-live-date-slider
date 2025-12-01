@@ -26,12 +26,37 @@ A powerful, fully customizable React date slider component with range, point, an
 ### Installation
 
 ```bash
-npm install date-slider-lib
+npm install date-slider-lib lucide-react
 # or
-pnpm install date-slider-lib
+pnpm add date-slider-lib lucide-react
 # or
-yarn add date-slider-lib
+yarn add date-slider-lib lucide-react
 ```
+
+### Setup
+
+**1. Import the CSS** (required for styling):
+
+```tsx
+// In your main file (e.g., App.tsx or main.tsx)
+import 'date-slider-lib/style.css';
+```
+
+**2. Configure Tailwind CSS** (if using Tailwind in your project):
+
+```js
+// tailwind.config.js
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/date-slider-lib/dist/**/*.{js,mjs,cjs}", // Add this line
+  ],
+  // ...
+}
+```
+
+> **Note**: The library uses inline styles for critical layout properties, so it works even without Tailwind configuration. However, configuring Tailwind ensures all styling classes are available for customization.
 
 ### Basic Usage
 

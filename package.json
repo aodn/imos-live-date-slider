@@ -1,6 +1,6 @@
 {
   "name": "date-slider-lib",
-  "version": "0.1.9-local.2",
+  "version": "0.1.9-local.3",
   "description": "A React TypeScript UI component library",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -17,6 +17,8 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./style.css": "./dist/date-slider-lib.css",
+    "./dist/date-slider-lib.css": "./dist/date-slider-lib.css",
     "./package.json": "./package.json"
   },
   "files": [
