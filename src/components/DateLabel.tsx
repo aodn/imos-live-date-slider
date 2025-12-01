@@ -5,15 +5,22 @@ import { memo } from 'react';
 import { createPortal } from 'react-dom';
 
 export const DateLabel = memo(
-  ({ position, label, immediateDisappear, labelPersistent, renderDateLabel }: DateLabelProps) => {
-    // showDateLabel only works when labelPersistent is false
+  ({
+    position,
+    label,
+    immediateDisappear,
+    handleLabelPersistent,
+    handleLabelDisabled,
+    renderDateLabel,
+  }: DateLabelProps) => {
+    // showDateLabel only works when handleLabelPersistent is false
     const { showDateLabel } = useDateLabelPersist(
       immediateDisappear || false,
       label,
-      labelPersistent || false
+      handleLabelPersistent || false
     );
-    if (!position || !label || !renderDateLabel) return null;
-    if (!showDateLabel && !labelPersistent) return null;
+    if (!position || !label || !renderDateLabel || handleLabelDisabled) return null;
+    if (!showDateLabel && !handleLabelPersistent) return null;
 
     return createPortal(
       <div

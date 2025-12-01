@@ -656,6 +656,8 @@ export const FrostSlider: Story = {
     },
     behavior: {
       scrollable: true,
+      handleLabelPersistent: false,
+      handleLabelDisabled: false,
     },
     classNames: {
       slider: 'frosted',

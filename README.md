@@ -311,7 +311,7 @@ type LayoutConfig = {
 type BehaviorConfig = {
   scrollable?: boolean;                 // Enable horizontal scrolling
   freeSelectionOnTrackClick?: boolean;  // Free selection vs snap to units
-  labelPersistent?: boolean;            // Keep labels always visible
+  handleLabelPersistent?: boolean;            // Keep labels always visible
 };
 ```
 

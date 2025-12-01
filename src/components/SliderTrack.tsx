@@ -267,7 +267,6 @@ export const SliderTrack = memo(
             <DateLabel
               label={dateLabel}
               position={labelPosition}
-              labelPersistent
               renderDateLabel={renderDateLabel}
             />
           )}
@@ -310,9 +309,7 @@ export const SliderTrack = memo(
           />
 
           {/* Date label */}
-          {showDateLabel && (
-            <DateLabel label={dateLabel} position={labelPosition} labelPersistent />
-          )}
+          {showDateLabel && <DateLabel label={dateLabel} position={labelPosition} />}
 
           {/* Active track */}
           <div

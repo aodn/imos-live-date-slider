@@ -183,8 +183,10 @@ export type BehaviorConfig = {
   scrollable?: boolean;
   /** Allow free datetime selection on track click (not limited to scale units) */
   freeSelectionOnTrackClick?: boolean;
-  /** Keep date label visible persistently */
-  labelPersistent?: boolean;
+  /** Keep handle date label visible persistently */
+  handleLabelPersistent?: boolean;
+  /** always disable hadle label */
+  handleLabelDisabled?: boolean;
 };
 
 /**
@@ -265,7 +267,8 @@ export type HandleRenderProps = {
   /** Button ref for imperative control */
   ref: RefObject<HTMLButtonElement | null>;
   /** Whether date label should persist */
-  labelPersistent?: boolean;
+  handleLabelPersistent?: boolean;
+  handleLabelDisabled?: boolean;
   /** Min value for aria */
   min: number;
   /** Max value for aria */
@@ -388,7 +391,9 @@ type CommonSliderProps = {
    *   behavior={{
    *     scrollable: true,
    *     freeSelectionOnTrackClick: true,
-   *     labelPersistent: false,
+   *     handleLabelPersistent: false,
+   *     handleLabelDisabled?: false;
+
    *   }}
    * />
    * ```
@@ -530,7 +535,8 @@ type BaseSliderTrackProps = {
   startHandleRef: React.RefObject<HTMLButtonElement | null>;
   endHandleRef: React.RefObject<HTMLButtonElement | null>;
   pointHandleRef: React.RefObject<HTMLButtonElement | null>;
-  labelPersistent?: boolean;
+  handleLabelPersistent?: boolean;
+  handleLabelDisabled?: boolean;
   classNames?: DateSliderClassNames;
   renderDateLabel?: (props: DateLabelRenderProps) => ReactNode;
 };
@@ -573,7 +579,8 @@ export type SliderHandleProps = {
   viewMode?: 'point' | 'range' | 'combined';
   isSliderDragging?: boolean;
   classNames?: DateSliderClassNames;
-  labelPersistent?: boolean;
+  handleLabelPersistent?: boolean;
+  handleLabelDisabled?: boolean;
   renderDateLabel?: (props: DateLabelRenderProps) => ReactNode;
 };
 
@@ -596,7 +603,8 @@ export type RenderSliderHandleProps = {
   onTouchStart: (handle: DragHandle) => (e: React.TouchEvent) => void;
   onKeyDown: (handle: DragHandle) => (e: React.KeyboardEvent) => void;
   isSliderDragging: boolean;
-  labelPersistent?: boolean;
+  handleLabelPersistent?: boolean;
+  handleLabelDisabled?: boolean;
   classNames?: DateSliderClassNames;
   renderDateLabel?: (props: DateLabelRenderProps) => ReactNode;
 };
@@ -631,6 +639,7 @@ export type DateLabelProps = {
   position?: { x: number; y: number };
   label?: string;
   immediateDisappear?: boolean;
-  labelPersistent?: boolean;
+  handleLabelPersistent?: boolean;
+  handleLabelDisabled?: boolean;
   renderDateLabel?: (props: DateLabelRenderProps) => ReactNode;
 };

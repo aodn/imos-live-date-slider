@@ -76,7 +76,8 @@ export const DateSlider = memo(
     // Extract behavior config with defaults
     const scrollable = behavior?.scrollable ?? true;
     const freeSelectionOnTrackClick = behavior?.freeSelectionOnTrackClick ?? false;
-    const labelPersistent = behavior?.labelPersistent;
+    const handleLabelPersistent = behavior?.handleLabelPersistent ?? false;
+    const handleLabelDisabled = behavior?.handleLabelDisabled ?? false;
 
     // Extract layout config with defaults
     const sliderWidth = layout?.width;
@@ -496,7 +497,8 @@ export const DateSlider = memo(
                   startHandleRef={startHandleRef}
                   endHandleRef={endHandleRef}
                   pointHandleRef={pointHandleRef}
-                  labelPersistent={labelPersistent}
+                  handleLabelPersistent={handleLabelPersistent}
+                  handleLabelDisabled={handleLabelDisabled}
                   classNames={classNames}
                   renderDateLabel={renderProps?.renderDateLabel}
                 />
@@ -527,7 +529,8 @@ export const DateSlider = memo(
                   onTouchStart={handleTouchStart}
                   onKeyDown={handleHandleKeyDown}
                   isSliderDragging={isSliderDragging}
-                  labelPersistent={labelPersistent}
+                  handleLabelPersistent={handleLabelPersistent}
+                  handleLabelDisabled={handleLabelDisabled}
                   classNames={classNames}
                   renderDateLabel={renderProps?.renderDateLabel}
                 />

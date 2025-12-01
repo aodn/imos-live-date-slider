@@ -18,7 +18,8 @@ export const SliderHandle = ({
   onKeyDown,
   onFocus,
   isSliderDragging,
-  labelPersistent,
+  handleLabelPersistent,
+  handleLabelDisabled,
   classNames,
   renderDateLabel,
 }: SliderHandleProps) => {
@@ -73,7 +74,8 @@ export const SliderHandle = ({
           position={generateLabelPosition()}
           label={label}
           immediateDisappear={isSliderDragging}
-          labelPersistent={labelPersistent}
+          handleLabelPersistent={handleLabelPersistent}
+          handleLabelDisabled={handleLabelDisabled}
           renderDateLabel={renderDateLabel}
         />
       )}
@@ -100,7 +102,8 @@ export const RenderSliderHandle = memo<RenderSliderHandleProps>(
     onTouchStart,
     onKeyDown,
     isSliderDragging,
-    labelPersistent,
+    handleLabelPersistent,
+    handleLabelDisabled,
     classNames,
     renderDateLabel,
   }) => {
@@ -133,7 +136,8 @@ export const RenderSliderHandle = memo<RenderSliderHandleProps>(
               value={rangeStart}
               handleType="start"
               onKeyDown={onKeyDown('start')}
-              labelPersistent={labelPersistent}
+              handleLabelPersistent={handleLabelPersistent}
+              handleLabelDisabled={handleLabelDisabled}
               renderDateLabel={renderDateLabel}
             />
             <SliderHandle
@@ -154,7 +158,8 @@ export const RenderSliderHandle = memo<RenderSliderHandleProps>(
               value={rangeEnd}
               handleType="end"
               onKeyDown={onKeyDown('end')}
-              labelPersistent={labelPersistent}
+              handleLabelPersistent={handleLabelPersistent}
+              handleLabelDisabled={handleLabelDisabled}
               renderDateLabel={renderDateLabel}
             />
           </>
@@ -180,7 +185,8 @@ export const RenderSliderHandle = memo<RenderSliderHandleProps>(
             handleType="point"
             onKeyDown={onKeyDown('point')}
             isSliderDragging={isSliderDragging}
-            labelPersistent={labelPersistent}
+            handleLabelPersistent={handleLabelPersistent}
+            handleLabelDisabled={handleLabelDisabled}
             renderDateLabel={renderDateLabel}
           />
         )}
