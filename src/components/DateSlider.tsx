@@ -14,6 +14,7 @@ import {
   useEventHandlers,
   useFocusManagement,
   useHandleDragState,
+  useHandleVisible,
   useInitialAutoScrollPosition,
   usePositionState,
   useRAFDFn,
@@ -235,49 +236,17 @@ export const DateSlider = memo(
     //TODO: 6. refactor files structure under components/DateSlider for better clarity.
     //TODO: 7. add more comments and documentation in the code.
 
-    // Auto scroll slider to keep handle in view when position changes via buttons or keyboard
-    useEffect(() => {
-      if (
-        !isSliderDragging &&
-        !isHandleDragging &&
-        autoScrollToVisibleAreaEnabled.current &&
-        sliderContainerRef.current &&
-        pointHandleRef?.current
-      ) {
-        const handleRect = pointHandleRef.current.getBoundingClientRect();
-        const containerRect = sliderContainerRef.current.getBoundingClientRect();
-
-        const distanceFromRightEdge = containerRect.right - handleRect.right;
-        const distanceFromLeftEdge = handleRect.left - containerRect.left;
-        const sliderContainerWidth = containerRect.width;
-        const handleWidth = handleRect.width;
-
-        // Handle is outside visible area on the right
-        if (distanceFromRightEdge < 0) {
-          const newX =
-            sliderPosition.x + distanceFromRightEdge - handleWidth - sliderContainerWidth / 2;
-          const clampedX = Math.max(newX, dragBounds.left);
-          resetPosition({ x: clampedX, y: 0 });
-          autoScrollToVisibleAreaEnabled.current = false;
-        }
-        // Handle is outside visible area on the left
-        else if (distanceFromLeftEdge < 0) {
-          const newX =
-            sliderPosition.x - distanceFromLeftEdge + handleWidth + sliderContainerWidth / 2;
-          const clampedX = Math.min(newX, dragBounds.right);
-          resetPosition({ x: clampedX, y: 0 });
-          autoScrollToVisibleAreaEnabled.current = false;
-        }
-      }
-    }, [
-      isHandleDragging,
-      sliderPosition.x,
-      dragBounds,
-      resetPosition,
+    useHandleVisible({
       pointHandleRef,
+      isHandleDragging,
       sliderContainerRef,
+      dragBounds,
+      sliderPosition,
+      resetPosition,
+      pointPosition,
       isSliderDragging,
-    ]);
+      autoScrollToVisibleAreaEnabled,
+    });
 
     useInitialAutoScrollPosition({
       scrollable,
@@ -426,7 +395,8 @@ export const DateSlider = memo(
       handleDragStarted,
       isSliderDragging,
       totalScaleUnits,
-      freeSelectionOnTrackClick
+      freeSelectionOnTrackClick,
+      autoScrollToVisibleAreaEnabled
     );
 
     const onChangeRef = useRef(onChange);
